@@ -7,14 +7,14 @@ require("dotenv").config()
 // const app = express()
 
 app.use(express.json())
-// app.use(express.static("dist"))
+app.use(express.static("dist"))
 app.use(cors({ origin: true, credentials: true }))
 app.use("/api/short", require("./routes/short.routes"))
 
 app.use("*", (req, res) => {
     //               absolute path
-    // res.sendFile(path.join(__dirname, "dist", "index.html"))
-    res.status(404).json({ message: "Resource Not Found 404" })
+    res.sendFile(path.join(__dirname, "dist", "index.html"))
+    // res.status(404).json({ message: "Resource Not Found 404" })
 })
 
 // step 4 error handler
