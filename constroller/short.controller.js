@@ -1,5 +1,6 @@
 const asyncHandler = require("express-async-handler")
 const Short = require("../models/Short")
+const { io } = require("../socket/socket")
 
 exports.getAllshort = asyncHandler(async (req, res) => {
     const result = await Short.find()
@@ -7,13 +8,17 @@ exports.getAllshort = asyncHandler(async (req, res) => {
 })
 exports.addshort = asyncHandler(async (req, res) => {
     await Short.create(req.body)
+    const result = await Short.find()
+    io.emit("Short-create-respone", result)
     res.json({ message: "add  success" })
 })
 exports.updateshort = asyncHandler(async (req, res) => {
     await Short.findByIdAndUpdate(req.params.id, req.body)
-    res.json({ message: "add  success" })
+    res.json({ message: "update  success" })
 })
 exports.deleteshort = asyncHandler(async (req, res) => {
     await Short.findByIdAndDelete(req.params.id)
-    res.json({ message: "add  success" })
+    const result = await Short.find()
+    io.emit("Short-create-response", result)
+    res.json({ message: "delete  success" })
 })
