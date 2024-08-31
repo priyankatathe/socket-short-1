@@ -4,6 +4,7 @@ const { io } = require("../socket/socket")
 
 exports.getAllshort = asyncHandler(async (req, res) => {
     const result = await Short.find()
+    io.emit("Short-create-respone", result)
     res.json({ message: "fetch  success", result })
 })
 exports.addshort = asyncHandler(async (req, res) => {
@@ -14,6 +15,8 @@ exports.addshort = asyncHandler(async (req, res) => {
 })
 exports.updateshort = asyncHandler(async (req, res) => {
     await Short.findByIdAndUpdate(req.params.id, req.body)
+    const result = await Short.find()
+    io.emit("Short-create-respone", result)
     res.json({ message: "update  success" })
 })
 exports.deleteshort = asyncHandler(async (req, res) => {
